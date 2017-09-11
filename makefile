@@ -16,5 +16,5 @@ valgrind:
 	valgrind ./$(TARGET)
 	
 clean:
-	rm -f $(OBJFILES) $(TARGET) *~
+	rm -f $(OBJFILES) $(TARGET) *~ .DS_Store
 	rm -rf $(TARGET).dSYM
