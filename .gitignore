@@ -1,2 +1,3 @@
 *.o
 List_App
+.DS_Store
