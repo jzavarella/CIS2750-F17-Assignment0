@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS = -Wall -std=c11
 LDFLAGS = 
-OBJFILES = StringListDemo.o LinkedListAPI.o
+OBJFILES = Main.o LinkedListAPI.o
 TARGET = List_App
 
 all: $(TARGET)
@@ -17,4 +17,4 @@ valgrind:
 	
 clean:
 	rm -f $(OBJFILES) $(TARGET) *~
-	rm -r $(TARGET).dSYM
+	rm -rf $(TARGET).dSYM
