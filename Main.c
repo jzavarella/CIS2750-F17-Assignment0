@@ -62,6 +62,8 @@ int main(void){
 	}
 	
 	printf("\n");
+  
+  printf("%s\n", getFromFront(list));
 	
 	/*
 	Crear list contents - free each node, including its contents
