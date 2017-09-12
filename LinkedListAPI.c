@@ -97,8 +97,9 @@ void insertBack(List *list, void *toBeAdded) {
  *@param list pointer to the dummy head of the list containing the head of the list
  *@return pointer to the data located at the head of the list
  **/
-void* getFromFront(List *list) {
-  return (list) ? list->head->data : NULL; // If the list doesnt exist, return NULL
+void* getFromFront(List list) {
+  // return (list) ? list->head->data : NULL; // If the list doesnt exist, return NULL
+  return list.head->data;
 }
 
 /**Returns a pointer to the data at the back of the list. Does not alter list structure.
@@ -106,8 +107,9 @@ void* getFromFront(List *list) {
  *@param list pointer to the dummy head of the list containing the tail of the list
  *@return pointer to the data located at the tail of the list
  **/
-void* getFromBack(List *list) {
-  return (list) ? list->tail->data : NULL; // If the list doesnt exist, return NULL
+void* getFromBack(List list) {
+  // return (list) ? list->tail->data : NULL; // If the list doesnt exist, return NULL
+  return list.tail->data;
 }
 
 /** Clears the contents linked list, freeing all memory asspociated with these contents.

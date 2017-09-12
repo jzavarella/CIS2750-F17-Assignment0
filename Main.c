@@ -26,15 +26,15 @@ void deleteFunc(void *toBeDeleted){
 
 int main(void){
 	//Allocate the strings
-	char* str[3];
+	char* str[4];
 	
-	for (int i = 0; i < 3; i++){
+	for (int i = 0; i < 4; i++){
 		str[i] = (char*)malloc(10*sizeof(char));
 	}
-	strcpy(str[0], "b");
-	strcpy(str[1], "d");
-	strcpy(str[2], "a");
-	// strcpy(str[3], "c");
+	strcpy(str[0], "Hello");
+	strcpy(str[1], " ");
+	strcpy(str[2], "world");
+	strcpy(str[3], "!");
 	
 	/* 
 	Create the list.  The list is allocated on the stack, and initializeList returns the list struct.
@@ -42,8 +42,8 @@ int main(void){
 	List list = initializeList(&printFunc, &deleteFunc, &compareFunc);
 
 	//Populate the list
-	for (int i = 0; i < 3; i++){
-		insertSorted(&list, (void*)str[i]);
+	for (int i = 0; i < 4; i++){
+		insertBack(&list, (void*)str[i]);
 	}
 	
 	void* elem;
@@ -63,12 +63,6 @@ int main(void){
 	
 	printf("\n");
 	
-	deleteDataFromList(&list, "b");
-	
-	char* s = toString(list);
-	printf("%s\n", s);
-	free(s);
-	
 	/*
 	Crear list contents - free each node, including its contents
 	Since the list is created in the stack, we don't need to free it. 
@@ -77,14 +71,3 @@ int main(void){
 	
 	return 0;		
 }
-
-
-
-
-
-
-
-
-
-
-
