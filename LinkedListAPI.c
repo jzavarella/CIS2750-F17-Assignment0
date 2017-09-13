@@ -225,11 +225,12 @@ returned string must be freed by the calling function.
 char* toString(List list) {
   int numChars = strlen("HEAD<-->"); //Start keeping track of the number of chars that need to be allocated
   
-  Node* node = list.head; //Iterate over the nodes starting from the head
-  while (node != NULL) {
-    numChars += strlen(list.printData(node->data)); //Add the number of chars for the string representation of this node
+  ListIterator iter = createIterator(list); // Create an iterator to loop through the list
+  void* element; // Variable to store the data
+  
+  while ((element = nextElement(&iter)) != NULL) {
+    numChars += strlen(list.printData(element)); //Add the number of chars for the string representation of this data
     numChars += strlen("<-->"); //Add the number of chars for the arrow symbol inbetween the nodes
-    node = node->next; //Move to the next node
   }
   numChars += strlen("TAIL"); //Allocate memory for the TAIL identifier
   
@@ -239,11 +240,11 @@ char* toString(List list) {
   }
   
   strcpy(string, "HEAD<-->"); //Concatenate the HEAD identifier
-  node = list.head; //Iterate over the nodes starting from the head
-  while (node != NULL) {
-    strcat(string, list.printData(node->data)); //Concatenate the string representation of this node
+  
+  iter = createIterator(list); // Make a new iterator to loop over the list again
+  while ((element = nextElement(&iter)) != NULL) {
+    strcat(string, list.printData(element)); //Concatenate the string representation of this data
     strcat(string, "<-->"); //Concatenate the link identifier
-    node = node->next; //Move to the next node
   }
   strcat(string, "TAIL"); //Concatenate the TAIL identifier
   
