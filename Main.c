@@ -62,7 +62,7 @@ int main(void){
 	}
 	
 	printf("\n");
-  
+  // printf("%s\n", deleteDataFromList(&list, "Hello"));
   printf("%s\n", (char*)getFromFront(list));
 	
 	/*

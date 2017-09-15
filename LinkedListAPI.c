@@ -194,7 +194,7 @@ void* deleteDataFromList(List *list, void *toBeDeleted) {
   while (currentNode != NULL) {
     Node* nextNode = currentNode->next; //Store the next node incase the current node must be freed
     if (list->compare(toBeDeleted, currentNode->data) == 0) { // If the data at the current node equals toBeDeleted
-      list->deleteData(currentNode->data); // Delete the data
+      void* data = currentNode->data;
       
       Node* previousNode = currentNode->previous;
       if (nextNode) {
@@ -208,7 +208,7 @@ void* deleteDataFromList(List *list, void *toBeDeleted) {
         list->head = nextNode; // If the previous node is NULL, the next node is the new list head
       }
       free(currentNode); // Free this node
-      return toBeDeleted; // Return pointer to data
+      return data; // Return pointer to data
     }
     currentNode = nextNode; //Move to the next node
   }
