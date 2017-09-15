@@ -1,3 +1,19 @@
+/*
+
+ * CIS2750 F2017
+
+ * Assignment 0
+
+ * Jackson Zavarella 0929350
+
+ * This file contains the implementation of the linked List API.
+
+ * No code was used from previous classes/ sources
+
+ */
+
+
+
 #include "LinkedListAPI.h"
 
 /** Function to initialize the list metadata head with the appropriate function pointers.
@@ -10,7 +26,7 @@ List initializeList(char* (*printFunction)(void *toBePrinted),void (*deleteFunct
   return (List) { .deleteData = deleteFunction, .compare = compareFunction, .printData = printFunction };
 }
 
-/**Function for creating a node for the linked list. 
+/**Function for creating a node for the linked list.
 * This node contains abstracted (void *) data as well as previous and next
 * pointers to connect to other nodes in the list
 *@pre data should be of same size of void pointer on the users machine to avoid size conflicts. data must be valid.
@@ -23,7 +39,7 @@ Node *initializeNode(void *data) {
   if (sizeof(void*) != sizeof(data)) {
     return NULL; // Data should be the same size as void pointer to avoid size conflicts
   }
-  
+
   Node* newNode = malloc(sizeof(Node)); //Allocate memory for the new node
   if (!newNode) {
     return NULL; // If malloc failed for whatever reason then return NULL
@@ -32,7 +48,7 @@ Node *initializeNode(void *data) {
   newNode->previous = NULL;
   newNode->next = NULL;
   newNode->data = (void*) data; //Assign the data
-  
+
   return newNode;
 }
 
@@ -55,7 +71,7 @@ void insertFront(List *list, void *toBeAdded) {
     newNode->next = currentHead; //The previous node of the new node is the current head
     currentHead->previous = newNode; //The next node to the current head will be the new node
   }
-  
+
   //Assign new head variable in the list
   list->head = newNode;
   //If the tail is null, then this new node must be the only node in the list
@@ -64,7 +80,7 @@ void insertFront(List *list, void *toBeAdded) {
   }
 }
 
-/**Inserts a Node at the back of a linked list. 
+/**Inserts a Node at the back of a linked list.
 *List metadata is updated so that head and tail pointers are correct.
 *@pre 'List' type must exist and be used in order to keep track of the linked list.
 *@param list pointer to the dummy head of the list
@@ -83,7 +99,7 @@ void insertBack(List *list, void *toBeAdded) {
     newNode->previous = currentTail; //The previous node of the new node is the current tail in the list
     currentTail->next = newNode; //The next node to the current tail will be the new node
   }
-    
+
   //Assign new tail variable in the list
   list->tail = newNode;
   //If the head is null, then this new node must be the only node in the list
@@ -132,12 +148,12 @@ void clearList(List *list) {
   list->tail = NULL; //List is empty so set the tail to NULL
 }
 
-/** Uses the comparison function pointer to place the element in the 
+/** Uses the comparison function pointer to place the element in the
 * appropriate position in the list.
-* should be used as the only insert function if a sorted list is required.  
+* should be used as the only insert function if a sorted list is required.
 *@pre List exists and has memory allocated to it. Node to be added is valid.
 *@post The node to be added will be placed immediately before or after the first occurrence of a related node
-*@param list a pointer to the dummy head of the list containing function pointers for delete and compare, as well 
+*@param list a pointer to the dummy head of the list containing function pointers for delete and compare, as well
 as a pointer to the first and last element of the list.
 *@param toBeAdded a pointer to data that is to be added to the linked list
 **/
@@ -153,17 +169,17 @@ void insertSorted(List *list, void *toBeAdded) {
   do {
     Node* nextNode = currentNode->next;
     int compareValue = list->compare(toBeAdded, currentNode->data); //Compare toBeAdded with the value of this node
-            
+
     if (compareValue <= 0) { //If the value is less than or equal to 0 toBeAdded should come before the current node
       Node* newNode = initializeNode(toBeAdded);
       if (!newNode) {
         return; // If the new node is NULL then dont insert
       }
       newNode->next = currentNode; // The next node to the new node is the next node of the current node
-      
+
       Node* previousNode = currentNode->previous; // Grab the previous node to the current node
       newNode->previous = previousNode; // The previous node of the new node will be the current node's previous
-      
+
       if (previousNode) { // If the previous node to the current node exists
         previousNode->next = newNode; // Set the next node of the previous node to be the new node
       } else { // If the previous node is NULL
@@ -175,14 +191,14 @@ void insertSorted(List *list, void *toBeAdded) {
       // If the next node is NULL then we have reached the end of the list and can insert toBeAdded at the end of the list
       insertBack(list, toBeAdded);
     }
-      
+
     currentNode = nextNode; //Move to the next node
   } while (currentNode != NULL);
 }
 
 /** Removes data from from the list, deletes the node and frees the memory,
  * changes pointer values of surrounding nodes to maintain list structure.
- * returns the data 
+ * returns the data
  *@pre List must exist and have memory allocated to it
  *@post toBeDeleted will have its memory freed if it exists in the list.
  *@param list pointer to the dummy head of the list containing deleteFunction function pointer
@@ -195,7 +211,7 @@ void* deleteDataFromList(List *list, void *toBeDeleted) {
     Node* nextNode = currentNode->next; //Store the next node incase the current node must be freed
     if (list->compare(toBeDeleted, currentNode->data) == 0) { // If the data at the current node equals toBeDeleted
       void* data = currentNode->data;
-      
+
       Node* previousNode = currentNode->previous;
       if (nextNode) {
         nextNode->previous = previousNode; // The next node's new previous node is the current node's previous node
@@ -224,34 +240,34 @@ returned string must be freed by the calling function.
  **/
 char* toString(List list) {
   int numChars = strlen("HEAD<-->"); //Start keeping track of the number of chars that need to be allocated
-  
+
   ListIterator iter = createIterator(list); // Create an iterator to loop through the list
   void* element; // Variable to store the data
-  
+
   while ((element = nextElement(&iter)) != NULL) {
     numChars += strlen(list.printData(element)); //Add the number of chars for the string representation of this data
     numChars += strlen("<-->"); //Add the number of chars for the arrow symbol inbetween the nodes
   }
   numChars += strlen("TAIL"); //Allocate memory for the TAIL identifier
-  
+
   char* string = malloc(numChars*sizeof(char) + 1); //Allocate enough memory for all the chars
   if (string == NULL) {
     return NULL; // If the allocation failed return NULL
   }
-  
+
   strcpy(string, "HEAD<-->"); //Concatenate the HEAD identifier
-  
+
   iter = createIterator(list); // Make a new iterator to loop over the list again
   while ((element = nextElement(&iter)) != NULL) {
     strcat(string, list.printData(element)); //Concatenate the string representation of this data
     strcat(string, "<-->"); //Concatenate the link identifier
   }
   strcat(string, "TAIL"); //Concatenate the TAIL identifier
-  
+
   return string;
 }
 
-/** Function for creating an iterator for the linked list. 
+/** Function for creating an iterator for the linked list.
  * This node contains abstracted (void *) data as well as previous and next
  * pointers to connect to other nodes in the list
  *@pre List exists and is valid
@@ -263,7 +279,7 @@ ListIterator createIterator(List list) {
   return (ListIterator) { list.head };
 }
 
-/** Function that returns the next element of the list through the iterator. 
+/** Function that returns the next element of the list through the iterator.
 * This function returns the head of the list the first time it is called after.
 * the iterator was created. Every subsequent call returns the next element.
 *@pre List exists and is valid.  Iterator exists and is valid.
@@ -277,6 +293,6 @@ void* nextElement(ListIterator* iter) {
     return NULL;
   }
   iter->current = current->next; // Point to the new nextnode
-  
+
   return current->data; // Return the data
 }
